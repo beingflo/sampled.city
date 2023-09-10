@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { parseGPX } from "./utils";
 
 export const ManageTracks = () => {
   const [hovered, setHovered] = createSignal(false);
@@ -10,7 +11,17 @@ export const ManageTracks = () => {
     [...(ev.dataTransfer?.items ?? [])].forEach((item, i) => {
       if (item.kind === "file") {
         const file = item.getAsFile();
-        console.log(`file[${i}].name = ${file.name}`);
+        const reader = new FileReader();
+        reader.readAsText(file);
+
+        reader.addEventListener(
+          "load",
+          () => {
+            const track = parseGPX(reader.result as string);
+            console.log(track);
+          },
+          false
+        );
       }
     });
   };
@@ -33,7 +44,9 @@ export const ManageTracks = () => {
         onDrop={onDrop}
         onDragOver={onDragOver}
         onDragExit={onDragExit}
-      />
+      >
+        <h1 class="text-2xl font-bold uppercase p-8">Manage tracks</h1>
+      </div>
     </div>
   );
 };

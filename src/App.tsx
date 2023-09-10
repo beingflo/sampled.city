@@ -1,6 +1,6 @@
 import type { Component } from "solid-js";
 import { Router, Routes, Route } from "@solidjs/router";
-import { ManageTracks } from "./ManageTracks";
+import { ManageTracks } from "./manage-tracks/ManageTracks";
 
 const App: Component = () => {
   return (
