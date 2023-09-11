@@ -1,3 +1,14 @@
 export type Track = {
-  description: string;
+  name: string;
+  type: string;
+  time: string;
+  trackPoints: Array<TrackPoint>;
+};
+
+export type TrackPoint = {
+  time: string;
+  lat: string;
+  lon: string;
+  elevation: number;
+  heartRate: number;
 };
