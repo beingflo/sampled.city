@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import { parseGPX } from "./utils";
+import { Track } from "./types";
 
 export const ManageTracks = () => {
   const [hovered, setHovered] = createSignal(false);
@@ -18,7 +19,11 @@ export const ManageTracks = () => {
           "load",
           () => {
             const track = parseGPX(reader.result as string);
-            localStorage.setItem("track", JSON.stringify(track));
+            const tracks = JSON.parse(
+              localStorage.getItem("tracks") ?? "[]"
+            ) as Array<Track>;
+            tracks.push(track);
+            localStorage.setItem("tracks", JSON.stringify(tracks));
           },
           false
         );

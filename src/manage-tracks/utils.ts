@@ -27,28 +27,30 @@ export const parseGPX = (content: string): Track => {
 };
 
 export const getBoundingBox = (
-  track: Track
+  tracks: Array<Track>
 ): [number, number, number, number] => {
   let minLon = 100;
   let maxLon = 0;
   let minLat = 100;
   let maxLat = 0;
 
-  track.trackPoints.forEach((point) => {
-    const lat = parseFloat(point.lat);
-    const lon = parseFloat(point.lon);
-    if (lat > maxLat) {
-      maxLat = lat;
-    }
-    if (lat < minLat) {
-      minLat = lat;
-    }
-    if (lon > maxLon) {
-      maxLon = lon;
-    }
-    if (lon < minLon) {
-      minLon = lon;
-    }
+  tracks.forEach((track) => {
+    track.trackPoints.forEach((point) => {
+      const lat = parseFloat(point.lat);
+      const lon = parseFloat(point.lon);
+      if (lat > maxLat) {
+        maxLat = lat;
+      }
+      if (lat < minLat) {
+        minLat = lat;
+      }
+      if (lon > maxLon) {
+        maxLon = lon;
+      }
+      if (lon < minLon) {
+        minLon = lon;
+      }
+    });
   });
   return [minLon, maxLon, minLat, maxLat];
 };
