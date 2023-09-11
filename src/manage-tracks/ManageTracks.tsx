@@ -18,7 +18,7 @@ export const ManageTracks = () => {
           "load",
           () => {
             const track = parseGPX(reader.result as string);
-            console.log(track);
+            localStorage.setItem("track", JSON.stringify(track));
           },
           false
         );

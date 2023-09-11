@@ -15,8 +15,8 @@ export const parseGPX = (content: string): Track => {
 
   for (let trkpt of trkseg?.children) {
     trackPoints.push({
-      lat: trkpt?.attributes["lat"],
-      lon: trkpt?.attributes["lon"],
+      lat: trkpt?.attributes["lat"].value,
+      lon: trkpt?.attributes["lon"].value,
       elevation: trkpt?.children[0].innerHTML,
       time: trkpt?.children[1].innerHTML,
       heartRate: trkpt?.children[2]?.children[0]?.children[0].innerHTML,
@@ -24,4 +24,47 @@ export const parseGPX = (content: string): Track => {
   }
 
   return { name, time, type, trackPoints };
+};
+
+export const getBoundingBox = (
+  track: Track
+): [number, number, number, number] => {
+  let minLon = 100;
+  let maxLon = 0;
+  let minLat = 100;
+  let maxLat = 0;
+
+  track.trackPoints.forEach((point) => {
+    const lat = parseFloat(point.lat);
+    const lon = parseFloat(point.lon);
+    if (lat > maxLat) {
+      maxLat = lat;
+    }
+    if (lat < minLat) {
+      minLat = lat;
+    }
+    if (lon > maxLon) {
+      maxLon = lon;
+    }
+    if (lon < minLon) {
+      minLon = lon;
+    }
+  });
+  return [minLon, maxLon, minLat, maxLat];
+};
+
+export const coord2canvas = (
+  cx: number,
+  cy: number,
+  width: number,
+  height: number,
+  minLon: number,
+  maxLon: number,
+  minLat: number,
+  maxLat: number,
+  p: number
+): [number, number] => {
+  const px = ((minLon - cx) / (minLon - maxLon)) * (width - p) + p / 2;
+  const py = ((maxLat - cy) / (maxLat - minLat)) * (height - p) + p / 2;
+  return [px, py];
 };
