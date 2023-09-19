@@ -1,10 +1,11 @@
-import { createSignal } from "solid-js";
+import { For, createSignal } from "solid-js";
 import { parseGPX } from "./utils";
 import { useStore } from "../store";
+import { Track } from "../types";
 
 export const ManageTracks = () => {
   const [hovered, setHovered] = createSignal(false);
-  const [, { storeTrack }] = useStore();
+  const [state, { storeTrack }] = useStore();
 
   const onDrop = (ev) => {
     ev.preventDefault();
@@ -48,6 +49,16 @@ export const ManageTracks = () => {
         onDragExit={onDragExit}
       >
         <h1 class="text-2xl font-bold uppercase p-8">Manage tracks</h1>
+        <ul>
+          <For each={state.tracks}>
+            {(track: Track) => (
+              <li class="flex flex-row gap-2">
+                <p class="w-72">{track.name}</p>
+                <p>{track.time}</p>
+              </li>
+            )}
+          </For>
+        </ul>
       </div>
     </div>
   );
