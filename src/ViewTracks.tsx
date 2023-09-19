@@ -1,21 +1,21 @@
 import type { Component } from "solid-js";
-import { onMount, onCleanup } from "solid-js";
+import { onMount } from "solid-js";
 import { coord2canvas, getBoundingBox } from "./manage-tracks/utils";
-import { Track } from "./manage-tracks/types";
+import { Track } from "./types";
+import { useStore } from "./store";
 
 export const ViewTracks: Component = () => {
-  const tracks = JSON.parse(
-    localStorage.getItem("tracks") ?? "[]"
-  ) as Array<Track>;
-  const [minLon, maxLon, minLat, maxLat] = getBoundingBox(tracks);
-  const [width, height] = [1000, 600];
+  const [state] = useStore();
+  const tracks = state.tracks as Array<Track>;
+  const [minLon, maxLon, minLat, maxLat] = getBoundingBox(tracks ?? []);
+  const [width, height] = [600, 600];
 
   let canvas;
 
   onMount(() => {
     const ctx = canvas.getContext("2d");
 
-    tracks.forEach((track) => {
+    tracks?.forEach((track) => {
       ctx.beginPath();
       track.trackPoints.forEach((p, i) => {
         const [px, py] = coord2canvas(
@@ -41,7 +41,7 @@ export const ViewTracks: Component = () => {
 
   return (
     <div class="w-screen h-screen">
-      <canvas ref={canvas} width="1000px" height="600px" />
+      <canvas ref={canvas} width="600px" height="600px" />
     </div>
   );
 };

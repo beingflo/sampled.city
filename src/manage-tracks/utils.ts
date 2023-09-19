@@ -1,4 +1,4 @@
-import { Track } from "./types";
+import { Track } from "../types";
 
 export const parseGPX = (content: string): Track => {
   const parser = new DOMParser();
