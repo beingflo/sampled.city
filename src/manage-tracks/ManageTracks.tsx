@@ -38,6 +38,14 @@ export const ManageTracks = () => {
     ev.preventDefault();
   };
 
+  const formatter = new Intl.DateTimeFormat("en-CH", {
+    hour: "numeric",
+    minute: "numeric",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
   return (
     <div class="w-screen h-screen p-4">
       <div
@@ -48,13 +56,13 @@ export const ManageTracks = () => {
         onDragOver={onDragOver}
         onDragExit={onDragExit}
       >
-        <h1 class="text-2xl font-bold uppercase p-8">Manage tracks</h1>
-        <ul>
+        <h1 class="text-2xl font-bold uppercase p-4 pb-12">Manage tracks</h1>
+        <ul class="px-4">
           <For each={state.tracks}>
             {(track: Track) => (
               <li class="flex flex-row gap-2">
                 <p class="w-72">{track.name}</p>
-                <p>{track.time}</p>
+                <p>{formatter.format(new Date(track.time))}</p>
               </li>
             )}
           </For>
