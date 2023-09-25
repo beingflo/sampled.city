@@ -1,3 +1,4 @@
+import { getDistance, getPathLength, getPreciseDistance } from "geolib";
 import { Track } from "../types";
 
 export const parseGPX = (content: string): Track => {
@@ -84,4 +85,12 @@ export const computeDuration = (track: Track): string => {
     return `${hours}h ${minutes}min`;
   }
   return `${minutes}min`;
+};
+
+export const computeLength = (track: Track): string => {
+  const length = getPathLength(
+    track.trackPoints.map((p) => ({ latitude: p.lat, longitude: p.lon }))
+  );
+
+  return `${(length / 1000).toFixed(1)} km`;
 };
