@@ -70,3 +70,18 @@ export const coord2canvas = (
   const py = ((maxLat - cy) / (maxLat - minLat)) * (height - p) + p / 2;
   return [px, py];
 };
+
+export const computeDuration = (track: Track): string => {
+  const firstPt = new Date(track.trackPoints[0].time);
+  const lastPt = new Date(track.trackPoints[track.trackPoints.length - 1].time);
+
+  const duration = (lastPt.valueOf() - firstPt.valueOf()) / (1000 * 60);
+
+  const hours = Math.floor(duration / 60);
+  const minutes = (duration % 60).toFixed(0);
+
+  if (hours > 0) {
+    return `${hours}h ${minutes}min`;
+  }
+  return `${minutes}min`;
+};

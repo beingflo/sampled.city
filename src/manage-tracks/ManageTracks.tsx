@@ -1,5 +1,5 @@
 import { For, createSignal } from "solid-js";
-import { parseGPX } from "./utils";
+import { computeDuration, parseGPX } from "./utils";
 import { useStore } from "../store";
 import { Track } from "../types";
 
@@ -62,7 +62,8 @@ export const ManageTracks = () => {
             {(track: Track) => (
               <li class="flex flex-row gap-2">
                 <p class="w-72">{track.name}</p>
-                <p>{formatter.format(new Date(track.time))}</p>
+                <p class="w-48">{formatter.format(new Date(track.time))}</p>
+                <p>{computeDuration(track)}</p>
               </li>
             )}
           </For>
